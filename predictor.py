@@ -56,12 +56,19 @@ def get_team_info(teams_data: Dict[str, Any], name: str) -> Optional[Dict[str, A
     Returns:
         Team dict if found, else None.
     """
-    name_stripped = name.strip()
-    # Search in clubs first, then nations
-    if name_stripped in teams_data.get("clubs", {}):
-        return teams_data["clubs"][name_stripped]
-    if name_stripped in teams_data.get("nations", {}):
-        return teams_data["nations"][name_stripped]
+    name = name.strip().lower()
+
+    for dataset in ("clubs", "nations"):
+        for team_name, info in teams_data.get(dataset, {}).items():
+            if team_name.lower() == name:
+                return info
+
+    # Partial match
+    for dataset in ("clubs", "nations"):
+        for team_name, info in teams_data.get(dataset, {}).items():
+            if name in team_name.lower():
+                return info
+
     return None
 
 def predict_match(team_a_name: str, team_b_name: str, data_path: str = TEAMS_DATA_PATH) -> Dict[str, Any]:

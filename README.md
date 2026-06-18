@@ -1,101 +1,207 @@
-# FIFACraft: FIFA Match Predictor (Minecraft Edition)
+# ⚽ FIFACraft
 
-An accurate, creative, and pixelated match outcome simulator that predicts football matches using historical FIFA 20 player datasets. The application uses a custom-themed Minecraft frontend coupled with a robust, statistical Flask backend.
+<p align="center">
+
+AI-powered football match prediction simulator built with **Python**, **Flask**, and **Monte Carlo simulations**.
+
+Predict realistic outcomes between clubs and national teams using FIFA ratings, probability models, and live match events.
+
+</p>
 
 ---
 
-## Technical Stack
-- **Backend:** Python 3.13+, Flask
-- **Frontend:** HTML5, CSS3 (Vanilla), JavaScript (Vanilla, Web Audio API synthesis)
-- **Dataset:** Preprocessed rating values derived from FIFA player overall ratings
+## 📸 Preview
+
+> *(Add screenshots after deployment)*
+
+| Home                      | Match Prediction            |
+| ------------------------- | --------------------------- |
+| ![](screenshots/home.png) | ![](screenshots/result.png) |
 
 ---
 
-## 🛠️ Testing Locally
+## ✨ Features
 
-We use Python's built-in `unittest` framework to verify backend match calculations and probabilities.
+* ⚽ Predict matches between **600+ clubs** and **national teams**
+* 🎲 Monte Carlo-inspired match simulation
+* 📈 Win / Draw / Loss probability calculation
+* ⭐ Dynamic match commentary
+* 🥅 Goal, save, foul and yellow card events
+* 🎨 Interactive football animations
+* ⚡ RESTful Flask API
+* ☁️ Docker-ready
+* 🚀 Deployable on Render & Google Cloud Run
 
-To run the unit tests:
-```powershell
-python -m unittest test_predictor.py
+---
+
+## 🛠 Tech Stack
+
+| Layer      | Technology                       |
+| ---------- | -------------------------------- |
+| Frontend   | HTML5, CSS3, JavaScript          |
+| Backend    | Flask                            |
+| Language   | Python                           |
+| Dataset    | JSON                             |
+| Deployment | Docker, Render, Google Cloud Run |
+
+---
+
+## 📂 Project Structure
+
+```
+fifacraft/
+
+│
+
+├── app.py
+
+├── predictor.py
+
+├── requirements.txt
+
+├── Dockerfile
+
+├── README.md
+
+├── .gitignore
+
+│
+
+├── data/
+
+│ └── teams_data.json
+
+│
+
+└── static/
+
+├── index.html
+
+├── script.js
+
+├── style.css
+
+└── background.js
 ```
 
 ---
 
-## 🚀 Running the App Locally
+## 🚀 Run Locally
 
-### 1. Install Dependencies
-Make sure you have Flask installed:
-```powershell
-pip install flask
+Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/fifacraft.git
 ```
 
-### 2. Preprocess Dataset (Optional)
-If you need to regenerate `teams_data.json` from the source CSV file:
-```powershell
-python generate_dataset.py
+Go inside
+
+```bash
+cd fifacraft
 ```
 
-### 3. Run the Development Server
-Launch the Flask server:
-```powershell
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run
+
+```bash
 python app.py
 ```
 
-Once started, open your web browser and navigate to:
-👉 **[http://localhost:5000](http://localhost:5000)**
+Open
+
+```
+http://localhost:5000
+```
 
 ---
 
-## ☁️ Deployment Instructions
+## 🐳 Docker
 
-### Option 1: Render / Heroku / Railway (PaaS Deployments)
+Build
 
-To deploy to modern hosting services like **Render**, **Railway**, or **Heroku**:
+```bash
+docker build -t fifacraft .
+```
 
-1. **Create a `requirements.txt` file**:
-   Ensure dependencies are documented. Run:
-   ```powershell
-   pip freeze > requirements.txt
-   ```
-2. **Add a production WSGI entrypoint (`gunicorn`)**:
-   For production deployments, do not use the built-in Flask dev server. Instead, install and run with Gunicorn:
-   ```bash
-   pip install gunicorn
-   ```
-3. **Configure the Start Command**:
-   Configure the platform build pack or startup command:
-   ```bash
-   gunicorn app:app
-   ```
-4. **Environment Variables**:
-   Set `FLASK_ENV=production` inside your PaaS provider's dashboard.
+Run
+
+```bash
+docker run -p 5000:5000 fifacraft
+```
 
 ---
 
-### Option 2: Docker Container Deployment
+## 🌐 REST API
 
-For containerized platforms (e.g. AWS ECS, Google Cloud Run, Azure Container Instances):
+### Get Teams
 
-1. **Create a `Dockerfile`**:
-   ```dockerfile
-   FROM python:3.13-slim
+```
+GET /api/teams
+```
 
-   WORKDIR /app
+Returns every available club and national team.
 
-   COPY requirements.txt .
-   RUN pip install --no-cache-dir -r requirements.txt
-   RUN pip install --no-cache-dir gunicorn
+---
 
-   COPY . .
+### Predict Match
 
-   EXPOSE 5000
+```
+GET /api/predict?team_a=Real Madrid&team_b=Manchester City
+```
 
-   CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
-   ```
+Example Response
 
-2. **Build and Run the Docker Container**:
-   ```bash
-   docker build -t fifacraft-predictor .
-   docker run -p 5000:5000 fifacraft-predictor
-   ```
+```json
+{
+    "team_a": "Real Madrid",
+    "team_b": "Manchester City",
+    "score": "2-1",
+    "winner": "Real Madrid"
+}
+```
+
+---
+
+## ☁ Deployment
+
+* ✅ Docker
+* ✅ Render
+* ✅ Google Cloud Run
+
+---
+
+## 🎯 Roadmap
+
+* [ ] Tournament Mode
+* [ ] FIFA World Cup Simulator
+* [ ] Club Career Mode
+* [ ] Live Team Ratings
+* [ ] Gemini AI Match Analysis
+* [ ] Mobile Responsive UI
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome!
+
+Feel free to fork the project and submit improvements.
+
+---
+
+## 📜 License
+
+MIT License
+
+---
+
+<p align="center">
+
+Made with ❤️ by **Aishwarya Pawar**
+
+</p>
