@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Environment Variables
+.env
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log

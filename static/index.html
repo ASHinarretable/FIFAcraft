@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFACraft - Match Predictor</title>
+    <!-- Press Start 2P is the classic Minecraft pixel font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="playground-canvas"></canvas>
+    
+    <div class="hero-fold">
+        <header class="title-container">
+            <h1 class="minecraft-logo">FIFACraft</h1>
+            <h2 class="subtitle">Match Predictor</h2>
+        </header>
+        <div class="scroll-prompt">
+            <span>SCROLL DOWN TO SIMULATE</span>
+            <div class="scroll-arrow">▼</div>
+        </div>
+    </div>
+    
+    <div class="app-container">
+
+        <!-- Main Workspace -->
+        <main class="main-workspace">
+            <!-- Selector Interface -->
+            <section id="setup-screen" class="mc-panel">
+                <div class="mc-panel-header">Select Competitors</div>
+                <div class="selection-grid">
+                    
+                    <!-- Team A (Home) -->
+                    <div class="team-selector-box home-box">
+                        <h3>HOME TEAM</h3>
+                        <div class="pixel-avatar" id="home-avatar">🏠</div>
+                        <div class="mc-control-group">
+                            <label>Team Type</label>
+                            <div class="mc-select-wrapper">
+                                <select id="home-type">
+                                    <option value="club">Clubs</option>
+                                    <option value="nation">Nations</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mc-control-group">
+                            <label>Choose Team</label>
+                            <div class="searchable-select">
+                                <input type="text" id="home-search" class="mc-input" placeholder="Search team...">
+                                <div class="mc-select-wrapper">
+                                    <select id="home-team" size="5"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-stat-badge">
+                            <span>Rating: </span>
+                            <span id="home-rating-val" class="stat-highlight">--</span>
+                        </div>
+                    </div>
+
+                    <!-- VS Spacer -->
+                    <div class="vs-divider">
+                        <div class="vs-text">VS</div>
+                    </div>
+
+                    <!-- Team B (Away) -->
+                    <div class="team-selector-box away-box">
+                        <h3>AWAY TEAM</h3>
+                        <div class="pixel-avatar" id="away-avatar">✈️</div>
+                        <div class="mc-control-group">
+                            <label>Team Type</label>
+                            <div class="mc-select-wrapper">
+                                <select id="away-type">
+                                    <option value="club">Clubs</option>
+                                    <option value="nation" selected>Nations</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mc-control-group">
+                            <label>Choose Team</label>
+                            <div class="searchable-select">
+                                <input type="text" id="away-search" class="mc-input" placeholder="Search team...">
+                                <div class="mc-select-wrapper">
+                                    <select id="away-team" size="5"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-stat-badge">
+                            <span>Rating: </span>
+                            <span id="away-rating-val" class="stat-highlight">--</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="action-bar">
+                    <button id="predict-btn" class="mc-button green">
+                        <span class="mc-button-text">SIMULATE MATCH</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Simulation Screen (Hidden initially) -->
+            <section id="sim-screen" class="mc-panel hidden">
+                <div class="mc-panel-header">Simulating Match...</div>
+                
+                <div class="scoreboard-container">
+                    <div class="scoreboard-team home">
+                        <div class="scoreboard-team-name" id="sim-home-name">Team A</div>
+                        <div class="scoreboard-team-rating" id="sim-home-rating">Rating: --</div>
+                    </div>
+                    
+                    <div class="scoreboard-score">
+                        <span id="sim-home-score" class="score-num">0</span>
+                        <span class="score-divider">-</span>
+                        <span id="sim-away-score" class="score-num">0</span>
+                    </div>
+
+                    <div class="scoreboard-team away">
+                        <div class="scoreboard-team-name" id="sim-away-name">Team B</div>
+                        <div class="scoreboard-team-rating" id="sim-away-rating">Rating: --</div>
+                    </div>
+                </div>
+
+                <!-- Simulation Progress / XP Bar -->
+                <div class="xp-bar-container">
+                    <div class="xp-bar-fill" id="xp-fill"></div>
+                    <div class="xp-text" id="xp-text">0%</div>
+                </div>
+
+                <!-- Match Feed (Minecraft Chat Window) -->
+                <div class="chat-panel">
+                    <div class="chat-header">📂 match_feed.log</div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Chat events appended here -->
+                    </div>
+                </div>
+
+                <!-- Outcome & Probabilities Panel -->
+                <div id="outcome-panel" class="outcome-panel hidden">
+                    <h3>MATCH STATISTICS</h3>
+                    <div class="probability-stats">
+                        <div class="prob-row">
+                            <span id="prob-home-name">Home Win</span>
+                            <div class="prob-bar-bg"><div class="prob-bar-fill home-color" id="prob-home-bar"></div></div>
+                            <span id="prob-home-val">0%</span>
+                        </div>
+                        <div class="prob-row">
+                            <span>Draw</span>
+                            <div class="prob-bar-bg"><div class="prob-bar-fill draw-color" id="prob-draw-bar"></div></div>
+                            <span id="prob-draw-val">0%</span>
+                        </div>
+                        <div class="prob-row">
+                            <span id="prob-away-name">Away Win</span>
+                            <div class="prob-bar-bg"><div class="prob-bar-fill away-color" id="prob-away-bar"></div></div>
+                            <span id="prob-away-val">0%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post-match-buttons">
+                        <button id="reset-btn" class="mc-button gray">
+                            <span class="mc-button-text">BACK TO SETUP</span>
+                        </button>
+                        <button id="rematch-btn" class="mc-button green">
+                            <span class="mc-button-text">REPLAY MATCH</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Sound Control / Minecraft-like mute button -->
+    <div class="audio-control" id="audio-toggle">
+        🔊 Sound: ON
+    </div>
+
+    <script src="background.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
