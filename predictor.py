@@ -15,8 +15,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Constants
-import os
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEAMS_DATA_PATH = os.path.join(BASE_DIR, "data", "teams_data.json")
 BASE_ATTACK_CHANCE = 0.04
